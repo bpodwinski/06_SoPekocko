@@ -4,4 +4,4 @@ Le projet a été généré avec [Angular CLI](https://github.com/angular/angula
 
 ## Development server
 
-Démarrer `ng serve` pour avoir accès au serveur de développement. Rendez-vous sur `http://localhost:4200/`. L'application va se recharger automatiquement si vous modifiez un fichier source.
+Installer `npm install pm2 -g` puis démarrer le projet `pm2 start pm2.config.js` pour avoir accès au serveur de développement. Rendez-vous sur `http://localhost:4200/`. L'application va se recharger automatiquement si vous modifiez un fichier source.
