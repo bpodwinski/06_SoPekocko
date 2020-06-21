@@ -1,0 +1,11 @@
+version: "3"
+services:
+  sopekocko:
+    build: .
+    image: sopekocko
+    container_name: sopekocko
+    domainname: sopekocko.benoitpodwinski.com
+    hostname: sopekocko
+    restart: always
+    ports:
+      - "0.0.0.0:19328:4200"

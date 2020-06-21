@@ -1,5 +1,3 @@
-const { isFunctionOrConstructorTypeNode } = require("typescript");
-
 module.exports = {
   apps: [
     {

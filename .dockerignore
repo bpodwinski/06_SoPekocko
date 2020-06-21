@@ -1,0 +1,7 @@
+*.docx
+*.md
+*.log
+.gitignore
+Dockerfile
+package-lock.json
+node_modules/
