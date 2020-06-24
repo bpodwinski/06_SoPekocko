@@ -48,7 +48,7 @@ export default class UsersController {
             }
             res.status(200).json({
               userId: user._id,
-              token: jwt.sign({ userId: user._id }, "udl*VFMnxp5Crly-({", {
+              token: jwt.sign({ userId: user._id }, "3P5DEkDn8yz0H9IgVU22", {
                 expiresIn: "24h",
               }),
             });

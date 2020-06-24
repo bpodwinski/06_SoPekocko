@@ -38,7 +38,11 @@ export default class App {
     mongoose
       .connect(
         "mongodb+srv://user98fhdg1:p3wn0uKhEPVD7soH@cluster0-3mlir.azure.mongodb.net/sopekocko?retryWrites=true&w=majority",
-        { useNewUrlParser: true, useUnifiedTopology: true }
+        {
+          useCreateIndex: true,
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+        }
       )
       .then(() => {
         console.log("Successfully connected to MongoDB Atlas!");
