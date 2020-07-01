@@ -2,6 +2,7 @@ module.exports = {
   apps: [
     {
       name: "frontend",
+      cwd: "./frontend",
       script: "ng",
       args: "serve",
       watch: false,
@@ -10,9 +11,9 @@ module.exports = {
     },
     {
       name: "backend",
-      cwd: "./backend",
-      script: "node",
-      args: "server",
+      cwd: "./backend/dist",
+      script: "nodemon",
+      args: "server.js",
       watch: false,
       log_file: "backend.log",
       time: false,
