@@ -1,5 +1,5 @@
 import * as express from "express";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import Users from "../models/users.model";
@@ -17,24 +17,21 @@ export default class UsersController {
   }
 
   // Signup
-  public signup = (req: Request, res: Response) => {
-    bcrypt
-      .hash(req.body.password, 10)
-      .then((hash) => {
-        const users = new Users({
-          email: req.body.email,
-          password: hash,
-        });
-        users
-          .save()
-          .then(() => res.status(201).json({ message: "User created!" }))
-          .catch((error) => res.status(400).json({ error }));
-      })
-      .catch((error) => res.status(500).json({ error }));
-  };
+  public async signup(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = new Users({
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, 10),
+      });
+      await users.save();
+      res.status(201).json({ message: "User created" });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   // Login
-  public login = (req: Request, res: Response) => {
+  public login = (req: Request, res: Response, next: NextFunction) => {
     Users.findOne({ email: req.body.email })
       .then((user) => {
         if (!user) {
@@ -44,7 +41,7 @@ export default class UsersController {
           .compare(req.body.password, user.password)
           .then((valid) => {
             if (!valid) {
-              return res.status(401).json({ error: "Wrong password!" });
+              return res.status(401).json({ error: "Wrong password" });
             }
             res.status(200).json({
               userId: user._id,

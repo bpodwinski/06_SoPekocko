@@ -1,4 +1,5 @@
 import * as express from "express";
+import { Request, Response, NextFunction } from "express";
 import * as compression from "compression";
 import * as mongoose from "mongoose";
 import * as cors from "cors";
@@ -8,21 +9,22 @@ export default class App {
   public app: express.Application;
   public port: number;
 
-  constructor(appInit: { port: number; middleWares: any; controllers: any }) {
+  constructor(appInit: { port: number; middlewares: any; routes: any }) {
     this.app = express();
     this.port = appInit.port;
 
-    this.db();
+    this.dbConnector();
     this.options();
-    this.middlewares(appInit.middleWares);
-    this.routes(appInit.controllers);
+    this.middlewares(appInit.middlewares);
+    this.routes(appInit.routes);
+    this.handlerError();
   }
 
-  private middlewares(middleWares: {
-    forEach: (arg0: (middleWare: any) => void) => void;
+  private middlewares(middlewares: {
+    forEach: (arg0: (middleware: any) => void) => void;
   }) {
-    middleWares.forEach((middleWare) => {
-      this.app.use(middleWare);
+    middlewares.forEach((middleware) => {
+      this.app.use(middleware);
     });
   }
 
@@ -34,23 +36,15 @@ export default class App {
     });
   }
 
-  private db(): void {
-    mongoose
-      .connect(
-        "mongodb+srv://user98fhdg1:p3wn0uKhEPVD7soH@cluster0-3mlir.azure.mongodb.net/sopekocko?retryWrites=true&w=majority",
-        {
-          useCreateIndex: true,
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-        }
-      )
-      .then(() => {
-        console.log("Successfully connected to MongoDB Atlas!");
-      })
-      .catch((error) => {
-        console.log("Unable to connect to MongoDB Atlas!");
-        console.error(error);
-      });
+  private async dbConnector() {
+    await mongoose.connect(
+      "mongodb+srv://user98fhdg1:p3wn0uKhEPVD7soH@cluster0-3mlir.azure.mongodb.net/sopekocko?retryWrites=true&w=majority",
+      {
+        useCreateIndex: true,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
   }
 
   private options() {
@@ -67,6 +61,34 @@ export default class App {
       "/var/images",
       express.static(path.join(__dirname, "/var/images"))
     );
+  }
+
+  private handlerError() {
+    this.app.use(function (
+      err: Error,
+      req: Request,
+      res: Response,
+      next: NextFunction
+    ) {
+      console.error(err);
+
+      if (err)
+        if (err instanceof mongoose.Error.ValidationError === true) {
+          res.status(400).json({
+            error: {
+              status: 400,
+              message: err,
+            },
+          });
+        } else {
+          res.status(500).json({
+            error: {
+              status: 500,
+              message: "Internal Server Error",
+            },
+          });
+        }
+    });
   }
 
   public listen() {
