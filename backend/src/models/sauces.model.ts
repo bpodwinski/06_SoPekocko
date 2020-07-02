@@ -11,8 +11,8 @@ interface ISauces extends Document {
   heat: Number;
   likes: Number;
   dislikes: Number;
-  usersLiked: Types.Array<string>;
-  usersDisliked: Types.Array<string>;
+  usersLiked: Array<string>;
+  usersDisliked: Array<string>;
 }
 
 const SauceSchema: Schema = new Schema({
@@ -21,7 +21,7 @@ const SauceSchema: Schema = new Schema({
   manufacturer: { type: String, required: true },
   description: { type: String, required: true },
   mainPepper: { type: String, required: true },
-  imageUrl: { type: String, required: false },
+  imageUrl: { type: String, required: true },
   heat: { type: Number, required: false },
   likes: { type: Number, required: false, default: 0 },
   dislikes: { type: Number, required: false, default: 0 },

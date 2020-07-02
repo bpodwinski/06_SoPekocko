@@ -72,7 +72,7 @@ export default class App {
     ) {
       console.error(err);
 
-      if (err)
+      if (err) {
         if (err instanceof mongoose.Error.ValidationError === true) {
           res.status(400).json({
             error: {
@@ -88,6 +88,7 @@ export default class App {
             },
           });
         }
+      }
     });
   }
 

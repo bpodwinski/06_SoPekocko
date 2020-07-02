@@ -1,7 +1,7 @@
 import App from "./app";
 
 import * as bodyParser from "body-parser";
-//import loggerMiddleware from "./middleware/logger";
+import MulterMiddleware from "./middlewares/multer";
 
 import SaucesController from "./controllers/sauces.controller";
 import UsersController from "./controllers/users.controller";
@@ -10,7 +10,11 @@ import UsersController from "./controllers/users.controller";
 
 const app = new App({
   port: 3000,
-  middlewares: [bodyParser.json(), bodyParser.urlencoded({ extended: true })],
+  middlewares: [
+    bodyParser.json(),
+    bodyParser.urlencoded({ extended: true }),
+    MulterMiddleware.single("image"),
+  ],
   routes: [new SaucesController(), new UsersController()],
 });
 
