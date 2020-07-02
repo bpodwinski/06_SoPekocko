@@ -15,6 +15,7 @@ export default class SaucesController {
     this.router.get("/sauces", this.getAllSauce);
     this.router.get("/sauces/:id", this.getOneSauce);
     this.router.post("/sauces", this.createSauce);
+    this.router.put("/sauces/:id", this.modifySauce);
     this.router.delete("/sauces/:id", this.deleteSauce);
   }
 
@@ -66,13 +67,38 @@ export default class SaucesController {
         throw next(new Error("Not found"));
       }
       const filename = sauce.imageUrl.split("/img/")[1];
-      const deleteSauce = await Sauces.deleteOne({ _id: req.params.id });
+      const deleteSauce = await Sauces.deleteOne({
+        _id: req.params.id,
+      });
 
       fs.unlink(`img/${filename}`, (error) => {
         if (error) throw next(error);
       });
 
       res.status(201).json({ message: deleteSauce });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Modify sauce
+  public async modifySauce(req: Request, res: Response, next: NextFunction) {
+    try {
+      const sauceObject = req.file
+        ? {
+            ...req.body.sauce,
+            imageUrl: `${req.protocol}://${req.get("host")}/img/${
+              req.file.filename
+            }`,
+          }
+        : { ...req.body };
+
+      const sauce = await Sauces.updateOne(
+        { _id: req.params.id },
+        { ...sauceObject, _id: req.params.id }
+      );
+
+      res.status(200).json({ message: sauce });
     } catch (error) {
       next(error);
     }
