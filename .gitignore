@@ -1,5 +1,5 @@
 *.log
 package-lock.json
 node_modules/
-backend_old/
 backend/dist/
+backend/img/

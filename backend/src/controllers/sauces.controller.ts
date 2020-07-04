@@ -1,8 +1,8 @@
 import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import * as fs from "fs";
+import * as Server from "../server";
 import Sauces from "../models/sauces.model";
-import upload from "../middlewares/multer";
 
 export default class SaucesController {
   public router = express.Router();
@@ -45,10 +45,8 @@ export default class SaucesController {
   public async createSauce(req: Request, res: Response, next: NextFunction) {
     try {
       const sauce = new Sauces({
-        ...req.body,
-        imageUrl: `${req.protocol}://${req.get("host")}/img/${
-          req.file.filename
-        }`,
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.hostname}:${Server.PORT}/img/${req.file.filename}`,
       });
       await sauce.save();
       res.status(201).json({ message: sauce });
@@ -86,10 +84,8 @@ export default class SaucesController {
     try {
       const sauceObject = req.file
         ? {
-            ...req.body.sauce,
-            imageUrl: `${req.protocol}://${req.get("host")}/img/${
-              req.file.filename
-            }`,
+            ...JSON.parse(req.body.sauce),
+            imageUrl: `${req.protocol}://${req.hostname}:${Server.PORT}/img/${req.file.filename}`,
           }
         : { ...req.body };
 

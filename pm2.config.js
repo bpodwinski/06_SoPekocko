@@ -12,8 +12,8 @@ module.exports = {
     {
       name: "backend",
       cwd: "./backend/dist",
-      script: "nodemon",
-      args: "server.js",
+      script: "npm run dev",
+      //args: "server.js",
       watch: false,
       log_file: "backend.log",
       time: false,

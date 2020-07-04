@@ -6,10 +6,12 @@ import MulterMiddleware from "./middlewares/multer";
 import SaucesController from "./controllers/sauces.controller";
 import UsersController from "./controllers/users.controller";
 
-//const PORT = parseInt(process.env.PORT || "3000");
+export const HOST = process.env.HOST || "0.0.0.0";
+export const PORT = parseInt(process.env.PORT || "3000");
 
 const app = new App({
-  port: 3000,
+  host: HOST,
+  port: PORT,
   middlewares: [
     bodyParser.json(),
     bodyParser.urlencoded({ extended: true }),

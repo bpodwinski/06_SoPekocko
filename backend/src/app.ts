@@ -7,10 +7,17 @@ import * as path from "path";
 
 export default class App {
   public app: express.Application;
+  public host: string;
   public port: number;
 
-  constructor(appInit: { port: number; middlewares: any; routes: any }) {
+  constructor(appInit: {
+    host: string;
+    port: number;
+    middlewares: any;
+    routes: any;
+  }) {
     this.app = express();
+    this.host = appInit.host;
     this.port = appInit.port;
 
     this.dbConnector();
@@ -57,10 +64,7 @@ export default class App {
           "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
       })
     );
-    this.app.use(
-      "/var/images",
-      express.static(path.join(__dirname, "/var/images"))
-    );
+    this.app.use("/img", express.static(path.join(__dirname, "../img")));
   }
 
   private handlerError() {
@@ -93,8 +97,8 @@ export default class App {
   }
 
   public listen() {
-    this.app.listen(this.port, () => {
-      console.log(`App listening on the http://localhost:${this.port}`);
+    this.app.listen(this.port, this.host, () => {
+      console.log(`App listening on the http://${this.host}:${this.port}`);
     });
   }
 }
