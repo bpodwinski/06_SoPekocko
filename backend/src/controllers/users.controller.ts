@@ -1,21 +1,9 @@
-import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import Users from "../models/users.model";
 
 export default class UsersController {
-  public router = express.Router();
-
-  constructor() {
-    this.initRoutes();
-  }
-
-  public initRoutes() {
-    this.router.post("/auth/signup", this.signup);
-    this.router.post("/auth/login", this.login);
-  }
-
   // Signup
   public async signup(req: Request, res: Response, next: NextFunction) {
     try {

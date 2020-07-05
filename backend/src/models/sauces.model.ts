@@ -8,9 +8,9 @@ interface ISauces extends Document {
   description: string;
   mainPepper: string;
   imageUrl: string;
-  heat: Number;
-  likes: Number;
-  dislikes: Number;
+  heat: number;
+  likes: number;
+  dislikes: number;
   usersLiked: Array<string>;
   usersDisliked: Array<string>;
 }

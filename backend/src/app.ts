@@ -35,11 +35,9 @@ export default class App {
     });
   }
 
-  private routes(controllers: {
-    forEach: (arg0: (controller: any) => void) => void;
-  }) {
-    controllers.forEach((controller) => {
-      this.app.use("/api", controller.router);
+  private routes(routes: { forEach: (arg0: (routes: any) => void) => void }) {
+    routes.forEach((routes) => {
+      this.app.use("/api", routes.router);
     });
   }
 
@@ -56,14 +54,6 @@ export default class App {
 
   private options() {
     this.app.use(compression());
-    this.app.use(
-      cors({
-        origin: "*",
-        methods: "GET,PUT,POST,DELETE",
-        allowedHeaders:
-          "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization",
-      })
-    );
     this.app.use("/img", express.static(path.join(__dirname, "../img")));
   }
 

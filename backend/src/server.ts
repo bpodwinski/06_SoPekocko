@@ -1,11 +1,15 @@
 import App from "./app";
-
 import * as bodyParser from "body-parser";
+
+// Middlewares import
 import MulterMiddleware from "./middlewares/multer";
+import CorsMiddleware from "./middlewares/cors";
 
-import SaucesController from "./controllers/sauces.controller";
-import UsersController from "./controllers/users.controller";
+// Routes import
+import UsersRoute from "./routes/users.route";
+import SaucesRoute from "./routes/sauces.route";
 
+// Env variables
 export const HOST = process.env.HOST || "0.0.0.0";
 export const PORT = parseInt(process.env.PORT || "3000");
 
@@ -13,11 +17,12 @@ const app = new App({
   host: HOST,
   port: PORT,
   middlewares: [
+    new CorsMiddleware().cors,
     bodyParser.json(),
     bodyParser.urlencoded({ extended: true }),
-    MulterMiddleware.single("image"),
+    new MulterMiddleware().multer.single("image"),
   ],
-  routes: [new SaucesController(), new UsersController()],
+  routes: [new UsersRoute(), new SaucesRoute()],
 });
 
 app.listen();
