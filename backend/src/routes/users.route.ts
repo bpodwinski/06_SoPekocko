@@ -10,7 +10,7 @@ export default class SaucesRoute {
   }
 
   public initRoutes() {
-    this.router.post("/auth/signup", this.Users.signup);
-    this.router.post("/auth/login", this.Users.login);
+    this.router.post("/auth/signup", this.Users.userRegistration);
+    this.router.post("/auth/login", this.Users.userLogin);
   }
 }

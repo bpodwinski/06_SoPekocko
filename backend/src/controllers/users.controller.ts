@@ -1,3 +1,4 @@
+import * as Server from "../server";
 import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
@@ -5,9 +6,13 @@ import Users from "../models/users.model";
 
 export default class UsersController {
   // Signup
-  public async signup(req: Request, res: Response, next: NextFunction) {
+  public async userRegistration(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
-      const users = new Users({
+      const users: any = new Users({
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10),
       });
@@ -19,27 +24,24 @@ export default class UsersController {
   }
 
   // Login
-  public login = (req: Request, res: Response, next: NextFunction) => {
-    Users.findOne({ email: req.body.email })
-      .then((user) => {
-        if (!user) {
-          return res.status(401).json({ error: "User not found!" });
-        }
-        bcrypt
-          .compare(req.body.password, user.password)
-          .then((valid) => {
-            if (!valid) {
-              return res.status(401).json({ error: "Wrong password" });
-            }
-            res.status(200).json({
-              userId: user._id,
-              token: jwt.sign({ userId: user._id }, "3P5DEkDn8yz0H9IgVU22", {
-                expiresIn: "24h",
-              }),
-            });
-          })
-          .catch((error) => res.status(500).json({ error }));
-      })
-      .catch((error) => res.status(500).json({ error }));
-  };
+  public async userLogin(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user: any = await Users.findOne({ email: req.body.email });
+      if (!user) {
+        throw "User not found";
+      }
+      if (bcrypt.compareSync(req.body.password, user.password)) {
+        res.status(200).json({
+          userId: user._id,
+          token: jwt.sign({ userId: user._id }, Server.TOKEN, {
+            expiresIn: "24h",
+          }),
+        });
+      } else {
+        throw "Passwords don't match";
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
 }

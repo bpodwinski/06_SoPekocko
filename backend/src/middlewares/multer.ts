@@ -10,7 +10,7 @@ export default class Multer {
     ) {
       cb(null, true);
     } else {
-      cb(new Error("Image uploaded is not of type jpg,jpeg or png"), false);
+      cb(new Error("Image uploaded is not of type jpg, jpeg or png"), false);
     }
   };
 
@@ -19,11 +19,11 @@ export default class Multer {
       cb(null, "./img");
     },
     filename: (req: any, file: any, cb: any) => {
-      const basename = path.basename(
+      const basename: string = path.basename(
         file.originalname.split(" ").join("_"),
         path.extname(file.originalname)
       );
-      const extension = path.extname(file.originalname);
+      const extension: string = path.extname(file.originalname);
       cb(null, basename + "_" + Date.now() + extension);
     },
   });

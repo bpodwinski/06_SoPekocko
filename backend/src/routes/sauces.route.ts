@@ -1,8 +1,10 @@
 import * as express from "express";
+import Auth from "../middlewares/auth";
 import SaucesController from "../controllers/sauces.controller";
 
 export default class SaucesRoute {
   public router = express.Router();
+  public Auth = new Auth().auth;
   public Sauces = new SaucesController();
 
   constructor() {
@@ -10,11 +12,11 @@ export default class SaucesRoute {
   }
 
   public initRoutes() {
-    this.router.get("/sauces", this.Sauces.getAllSauce);
-    this.router.get("/sauces/:id", this.Sauces.getOneSauce);
-    this.router.post("/sauces", this.Sauces.createSauce);
-    this.router.put("/sauces/:id", this.Sauces.modifySauce);
-    this.router.delete("/sauces/:id", this.Sauces.deleteSauce);
-    this.router.post("/sauces/:id/like", this.Sauces.likeOrDislike);
+    this.router.get("/sauces", this.Auth, this.Sauces.getAllSauce);
+    this.router.get("/sauces/:id", this.Auth, this.Sauces.getOneSauce);
+    this.router.post("/sauces", this.Auth, this.Sauces.createSauce);
+    this.router.put("/sauces/:id", this.Auth, this.Sauces.modifySauce);
+    this.router.delete("/sauces/:id", this.Auth, this.Sauces.deleteSauce);
+    this.router.post("/sauces/:id/like", this.Auth, this.Sauces.likeOrDislike);
   }
 }

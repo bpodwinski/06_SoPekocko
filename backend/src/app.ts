@@ -2,7 +2,6 @@ import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import * as compression from "compression";
 import * as mongoose from "mongoose";
-import * as cors from "cors";
 import * as path from "path";
 
 export default class App {
@@ -67,6 +66,7 @@ export default class App {
       console.error(err);
 
       if (err) {
+        // 400 Bad Request
         if (err instanceof mongoose.Error.ValidationError === true) {
           res.status(400).json({
             error: {
@@ -74,6 +74,23 @@ export default class App {
               message: err,
             },
           });
+        }
+
+        // 401 Unauthorized
+        if (
+          err.name === "JsonWebTokenError" ||
+          err.name === "TokenExpiredError" ||
+          err.toString().includes("User not found") ||
+          err.toString().includes("Passwords don't match")
+        ) {
+          res.status(401).json({
+            error: {
+              status: 401,
+              message: err,
+            },
+          });
+
+          //500 Internal Server Error
         } else {
           res.status(500).json({
             error: {
