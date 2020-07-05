@@ -6,8 +6,9 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm install pm2 @angular/cli -g \
-    && npm install \
     && cd backend/ \
+    && npm install \
+    && cd ../frontend/ \
     && npm install
 
 EXPOSE 4200
