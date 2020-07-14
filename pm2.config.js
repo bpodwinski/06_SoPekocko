@@ -11,9 +11,9 @@ module.exports = {
     },
     {
       name: "backend",
-      cwd: "./backend/dist",
-      script: "node",
-      args: "server.js",
+      cwd: "./backend",
+      script: "npm run dev",
+      //args: "server.js",
       watch: false,
       log_file: "backend.log",
       time: false,

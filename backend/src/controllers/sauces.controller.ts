@@ -1,3 +1,4 @@
+import Error from "../exceptions/AppException";
 import { Request, Response, NextFunction } from "express";
 import * as fs from "fs";
 import * as Server from "../server";
@@ -47,7 +48,7 @@ export default class SaucesController {
         _id: req.params.id,
       });
       if (!sauce) {
-        throw next(new Error("Not found"));
+        throw new Error(404, "Not found");
       }
       const filename: string = sauce.imageUrl.split("/img/")[1];
       const deleteSauce: any = await Sauces.deleteOne({
@@ -115,7 +116,7 @@ export default class SaucesController {
       Sauces.findOne({ _id: req.params.id })
         .then((sauce) => {
           if (!sauce) {
-            throw next(new Error("Not found"));
+            throw new Error(404, "Not found");
           }
           if (sauce.usersLiked.includes(req.body.userId)) {
             Sauces.updateOne(

@@ -2,8 +2,8 @@ import App from "./app";
 import * as bodyParser from "body-parser";
 
 // Middlewares import
-import MulterMiddleware from "./middlewares/multer";
-import CorsMiddleware from "./middlewares/cors";
+import MulterMiddleware from "./middlewares/multer.middleware";
+import CorsMiddleware from "./middlewares/cors.middleware";
 
 // Routes import
 import UsersRoute from "./routes/users.route";

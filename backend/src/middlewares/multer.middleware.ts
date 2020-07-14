@@ -1,3 +1,4 @@
+import Error from "../exceptions/AppException";
 import * as multer from "multer";
 import * as path from "path";
 
@@ -10,7 +11,10 @@ export default class Multer {
     ) {
       cb(null, true);
     } else {
-      cb(new Error("Image uploaded is not of type jpg, jpeg or png"), false);
+      cb(
+        new Error(200, "Image uploaded is not of type jpg, jpeg or png"),
+        false
+      );
     }
   };
 

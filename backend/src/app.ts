@@ -1,3 +1,4 @@
+import AppError from "./middlewares/error.middleware";
 import * as express from "express";
 import { Request, Response, NextFunction } from "express";
 import * as compression from "compression";
@@ -57,50 +58,7 @@ export default class App {
   }
 
   private handlerError() {
-    this.app.use(function (
-      err: Error,
-      req: Request,
-      res: Response,
-      next: NextFunction
-    ) {
-      console.error(err);
-
-      if (err) {
-        // 400 Bad Request
-        if (err instanceof mongoose.Error.ValidationError === true) {
-          res.status(400).json({
-            error: {
-              status: 400,
-              message: err,
-            },
-          });
-        }
-
-        // 401 Unauthorized
-        if (
-          err.name === "JsonWebTokenError" ||
-          err.name === "TokenExpiredError" ||
-          err.toString().includes("User not found") ||
-          err.toString().includes("Passwords don't match")
-        ) {
-          res.status(401).json({
-            error: {
-              status: 401,
-              message: err,
-            },
-          });
-
-          //500 Internal Server Error
-        } else {
-          res.status(500).json({
-            error: {
-              status: 500,
-              message: "Internal Server Error",
-            },
-          });
-        }
-      }
-    });
+    this.app.use(AppError);
   }
 
   public listen() {

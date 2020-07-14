@@ -1,5 +1,5 @@
 import * as express from "express";
-import Auth from "../middlewares/auth";
+import Auth from "../middlewares/auth.middleware";
 import SaucesController from "../controllers/sauces.controller";
 
 export default class SaucesRoute {

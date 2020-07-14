@@ -1,3 +1,4 @@
+import Error from "../exceptions/AppException";
 import * as Server from "../server";
 import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
@@ -28,7 +29,7 @@ export default class UsersController {
     try {
       const user: any = await Users.findOne({ email: req.body.email });
       if (!user) {
-        throw "User not found";
+        throw new Error(401, "User not found");
       }
       if (bcrypt.compareSync(req.body.password, user.password)) {
         res.status(200).json({
@@ -38,7 +39,7 @@ export default class UsersController {
           }),
         });
       } else {
-        throw "Passwords don't match";
+        throw new Error(401, "Passwords don't match");
       }
     } catch (error) {
       next(error);
