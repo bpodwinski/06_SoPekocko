@@ -1,9 +1,10 @@
-import Error from "../exceptions/AppException";
-import * as Server from "../server";
+import * as conf from "../config/env";
+import Error from "../exceptions/app.exception";
+import Users from "../models/users.model";
+
 import { Request, Response, NextFunction } from "express";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import Users from "../models/users.model";
 
 export default class UsersController {
   // Signup
@@ -34,7 +35,7 @@ export default class UsersController {
       if (bcrypt.compareSync(req.body.password, user.password)) {
         res.status(200).json({
           userId: user._id,
-          token: jwt.sign({ userId: user._id }, Server.TOKEN, {
+          token: jwt.sign({ userId: user._id }, conf.TOKEN, {
             expiresIn: "24h",
           }),
         });

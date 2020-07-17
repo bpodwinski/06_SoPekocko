@@ -1,8 +1,9 @@
-import Error from "../exceptions/AppException";
+import * as conf from "../config/env";
+import Error from "../exceptions/app.exception";
+import Sauces from "../models/sauces.model";
+
 import { Request, Response, NextFunction } from "express";
 import * as fs from "fs";
-import * as Server from "../server";
-import Sauces from "../models/sauces.model";
 
 export default class SaucesController {
   // Get all sauces
@@ -32,7 +33,7 @@ export default class SaucesController {
     try {
       const sauce: any = new Sauces({
         ...JSON.parse(req.body.sauce),
-        imageUrl: `${req.protocol}://${req.hostname}:${Server.PORT}/img/${req.file.filename}`,
+        imageUrl: `${req.protocol}://${req.hostname}:${conf.PORT}/img/${req.file.filename}`,
       });
       await sauce.save();
       res.status(201).json({ message: sauce });
@@ -71,7 +72,7 @@ export default class SaucesController {
       const sauceObject: object = req.file
         ? {
             ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.hostname}:${Server.PORT}/img/${req.file.filename}`,
+            imageUrl: `${req.protocol}://${req.hostname}:${conf.PORT}/img/${req.file.filename}`,
           }
         : { ...req.body };
 

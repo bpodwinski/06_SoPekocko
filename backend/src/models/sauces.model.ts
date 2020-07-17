@@ -1,6 +1,5 @@
 import * as mongoose from "mongoose";
 import { Document, Schema, Types } from "mongoose";
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from "constants";
 
 interface ISauces extends Document {
   userId: string;

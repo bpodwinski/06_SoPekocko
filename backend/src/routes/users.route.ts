@@ -1,5 +1,6 @@
-import * as express from "express";
 import UsersController from "../controllers/users.controller";
+
+import * as express from "express";
 
 export default class SaucesRoute {
   public router = express.Router();

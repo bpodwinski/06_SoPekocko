@@ -1,4 +1,5 @@
-import Error from "../exceptions/AppException";
+import Error from "../exceptions/app.exception";
+
 import * as multer from "multer";
 import * as path from "path";
 

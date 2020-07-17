@@ -1,17 +1,17 @@
+import AppException from "../exceptions/app.exception";
 import { NextFunction, Request, Response } from "express";
-import AppError from "../exceptions/AppException";
 
 export default function errorMiddleware(
-  err: AppError,
+  err: AppException,
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const status: number = err.status || 500;
+  const httpStatus: number = err.httpStatus || 500;
   const message: string = err.message || "Internal Server Error";
 
-  res.status(status).send({
-    status,
+  res.status(httpStatus).send({
+    httpStatus,
     message,
   });
 }

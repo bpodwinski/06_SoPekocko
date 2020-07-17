@@ -1,9 +1,9 @@
-export default class AppError extends Error {
-  status: number;
+export default class AppException extends Error {
+  httpStatus: number;
   message: string;
   constructor(status: number, message: string) {
     super(message);
-    this.status = status;
+    this.httpStatus = status;
     this.message = message;
   }
 }

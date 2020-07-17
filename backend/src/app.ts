@@ -1,6 +1,6 @@
+import * as conf from "./config/env";
 import AppError from "./middlewares/error.middleware";
 import * as express from "express";
-import { Request, Response, NextFunction } from "express";
 import * as compression from "compression";
 import * as mongoose from "mongoose";
 import * as path from "path";
@@ -43,7 +43,7 @@ export default class App {
 
   private async dbConnector() {
     await mongoose.connect(
-      "mongodb+srv://user98fhdg1:p3wn0uKhEPVD7soH@cluster0-3mlir.azure.mongodb.net/sopekocko?retryWrites=true&w=majority",
+      `mongodb+srv://${conf.DB_USER}:${conf.DB_PASS}@${conf.DB_HOST}/sopekocko?retryWrites=true&w=majority`,
       {
         useCreateIndex: true,
         useNewUrlParser: true,

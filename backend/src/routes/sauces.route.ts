@@ -1,6 +1,7 @@
-import * as express from "express";
 import Auth from "../middlewares/auth.middleware";
 import SaucesController from "../controllers/sauces.controller";
+
+import * as express from "express";
 
 export default class SaucesRoute {
   public router = express.Router();
